@@ -1,27 +1,12 @@
-def call(String buildStatus = 'STARTED') {
-  // build status of null means successful
-  //This is the condition which we are checking weather buildStatus is SUCCESSFULL or not.
- //This line updated to show the Eclipse with GitHub demo
-  buildStatus =  buildStatus ?: 'SUCCESS'
+def call(String buildStatus = 'STARTED', String slackCredId = '594d2434-df4f-4961-b6ab-05a902316091') {
+    buildStatus = buildStatus ?: 'SUCCESS'
+    def colorCode = (buildStatus == 'SUCCESS') ? '#00FF00' : (buildStatus == 'STARTED') ? '#FFFF00' : '#FF0000'
+    def summary = "${buildStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})"
 
-  // Default values
-  def colorName = 'RED'
-  def colorCode = '#FF0000'
-  def subject = "${buildStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'"
-  def summary = "${subject} (${env.BUILD_URL})"
-
-  // Override default values based on build status
-  if (buildStatus == 'STARTED') {
-    colorName = 'YELLOW'
-    colorCode = '#FFFF00'
-  } else if (buildStatus == 'SUCCESS') {
-    colorName = 'GREEN'
-    colorCode = '#00FF00'
-  } else {
-    colorName = 'RED'
-    colorCode = '#FF0000'
-  }
-
-  // Calling the slackSend function to Send notifications.
-  slackSend (color: colorCode, message: summary)
+    slackSend(
+        tokenCredentialId: 594d2434-df4f-4961-b6ab-05a902316091,  // Jenkins credential ID
+        channel: '#builds',
+        color: colorCode,
+        message: summary
+    )
 }
