@@ -4,7 +4,7 @@ def call(String buildStatus = 'STARTED', String slackCredId = '594d2434-df4f-496
     def summary = "${buildStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})"
 
     slackSend(
-        tokenCredentialId: 594d2434-df4f-4961-b6ab-05a902316091,  // Jenkins credential ID
+        tokenCredentialId: '594d2434-df4f-4961-b6ab-05a902316091',  // Jenkins credential ID
         channel: '#builds',
         color: colorCode,
         message: summary
